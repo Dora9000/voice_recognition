@@ -7,13 +7,11 @@ import wave
 
 
 def extract_features(y, sr, n_mfcc, window=0.032, hop=0.01):
-    # , winstep=hop,winlen=window)  # try (audio,rate, 0.025, 0.01,20,appendEnergy = True)
-    mfcc = python_speech_features.mfcc(signal=y, samplerate=sr, numcep=n_mfcc)
+    mfcc = python_speech_features.mfcc(signal=y, samplerate=sr, numcep=n_mfcc)# , winstep=hop,winlen=window)
     mfcc = mfcc.T
     mfcc_delta = librosa.feature.delta(mfcc)
     mfcc_delta2 = librosa.feature.delta(mfcc, order=2)
     stacked = np.vstack((mfcc, mfcc_delta, mfcc_delta2))
-    # print('extract_features - ', stacked.shape)
     return stacked.T
 
 

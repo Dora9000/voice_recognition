@@ -21,12 +21,11 @@ def map_adaptation(gmm, data, max_iterations=300, likelihood_threshold=1e-20, re
         old_likelihood = new_likelihood
         z_n_k = gmm.predict_proba(data)
         n_k = np.sum(z_n_k, axis=0)
-
         for i in range(K):
             temp = np.zeros((1, D))
             for n in range(N):
                 temp += z_n_k[n][i] * data[n, :]
-            mu_new[i] = (1 / n_k[i]) * temp
+            mu_new[i] = (1 / max(n_k[i], 1e-20)) * temp
 
         adaptation_coefficient = n_k / (n_k + relevance_factor)
         for k in range(K):
@@ -35,5 +34,5 @@ def map_adaptation(gmm, data, max_iterations=300, likelihood_threshold=1e-20, re
 
         log_likelihood = gmm.score(data)
         new_likelihood = log_likelihood
-        print(log_likelihood)
+        #print(log_likelihood)
     return gmm
